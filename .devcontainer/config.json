@@ -13,8 +13,8 @@
       },
       "streamSettings": {
         "network": "xhttp",
-        "xhttpSettings": {
-          "mode": "packet-up",
+        "xhttpSettings": {"xPaddingBytes":"8-20","xPaddingObfsMode":true,"xPaddingKey":"r","xPaddingHeader":"Cache-Control","xPaddingMethod":"tokenish","mode":"auto","scMaxEachPostBytes":"1000000"}
+          "mode": "auto",
           "path": "/"
         }
       }
