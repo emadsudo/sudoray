@@ -12,7 +12,7 @@
       "version": "latest"
     }
   },
-  "postStartCommand": "/usr/local/bin/start-xray.sh && /usr/local/bin/start-admin.sh",
+  "postStartCommand": "nohup /usr/local/bin/start-xray.sh >/tmp/xray-start.log 2>&1 & nohup /usr/local/bin/start-admin.sh >/tmp/admin-start.log 2>&1 & true",
   "postAttachCommand": {
     "public": "gh codespace ports visibility 443:public 8080:public -c $CODESPACE_NAME || true"
   },
@@ -32,7 +32,5 @@
   "hostRequirements": {
     "cpus": 2
   }
-}  "hostRequirements": {
-    "cpus": 2
-  }
+}  }
 }
