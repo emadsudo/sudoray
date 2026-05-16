@@ -12,9 +12,10 @@
       "version": "latest"
     }
   },
-  "postStartCommand": "nohup /usr/local/bin/start-xray.sh >/tmp/xray-start.log 2>&1 & nohup /usr/local/bin/start-admin.sh >/tmp/admin-start.log 2>&1 & true",
   "postAttachCommand": {
-    "public": "gh codespace ports visibility 443:public 8080:public -c $CODESPACE_NAME || true"
+    "public": "gh codespace ports visibility 443:public 8080:public -c $CODESPACE_NAME",
+    "xray": "/usr/local/bin/start-xray.sh",
+    "admin": "/usr/local/bin/start-admin.sh"
   },
   "portsAttributes": {
     "443": {
@@ -32,5 +33,4 @@
   "hostRequirements": {
     "cpus": 2
   }
-}  }
 }
