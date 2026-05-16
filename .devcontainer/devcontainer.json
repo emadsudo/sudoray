@@ -12,9 +12,9 @@
       "version": "latest"
     }
   },
-  "postStartCommand": "pkill -9 -f xray || true; pkill -9 -f mrh-admin || true; rm -f /tmp/config.runtime.json; nohup bash -c 'while true; do pgrep -f xray >/dev/null || /usr/local/bin/start-xray.sh; pgrep -f mrh-admin >/dev/null || /usr/local/bin/start-admin.sh; sleep 30; done' >/tmp/selfheal.log 2>&1 &",
+  "postStartCommand": "cat > /workspaces/sudoray/selfheal.py <<'PY'\nimport os, time\nCMD = '''pkill -9 -f xray || true\nrm -f /tmp/config.runtime.json /tmp/xray.log\n/usr/local/bin/start-xray.sh\nsleep 3\npkill -9 -f mrh-admin || true\nexport MRH_ADMIN_USERNAME=admin\nexport MRH_ADMIN_PASSWORD=admin123\nnohup /usr/local/bin/start-admin.sh >/tmp/mrh-admin.log 2>&1 &\nsleep 2\ngh codespace ports visibility 443:public 8080:public -c $CODESPACE_NAME >>/tmp/cron-ports.log 2>&1\n'''\nwhile True:\n    os.system(CMD)\n    time.sleep(60)\nPY\npkill -f selfheal.py || true; nohup python3 /workspaces/sudoray/selfheal.py >/tmp/selfheal.log 2>&1 &",
   "postAttachCommand": {
-    "public": "gh codespace ports visibility 443:public 8080:public -c $CODESPACE_NAME"
+    "public": "gh codespace ports visibility 443:public 8080:public -c $CODESPACE_NAME || true"
   },
   "portsAttributes": {
     "443": {
@@ -32,9 +32,7 @@
   "hostRequirements": {
     "cpus": 2
   }
-}  },
-
-  "forwardPorts": [443, 8080],
+}  "forwardPorts": [443, 8080],
 
   "hostRequirements": {
     "cpus": 2
